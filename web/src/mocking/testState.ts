@@ -3,8 +3,8 @@ import { ActiveRace, Track } from "../store/types";
 
 /* eslint-disable no-loss-of-precision */
 export const testState = {
-  appIsOpen: true,
-  hudIsOpen: false,
+  appIsOpen: false,
+  hudIsOpen: true,
   currentPage: "dashboard",
   currentTab: {
     racing : 'current',

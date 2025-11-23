@@ -5,50 +5,59 @@
         <RacerList :racers="globalStore.activeRace.positions" />
       </div>
       <div class="blocks-container">
-        <div class="blocks">
-          <span id="track-name"> {{ globalStore.activeRace.raceName }}</span>
-          <div
-            class="position-container"
-            v-if="
-              globalStore.activeRace.totalRacers &&
-              globalStore.activeRace.totalRacers !== 1
-            "
-          >
-            <span id="smaller">{{ translate("pos") }}</span>
-            <span id="position">{{
-              `${globalStore.activeRace.position}/${globalStore.activeRace.totalRacers}`
-            }}</span>
+        <!-- New Compact HUD -->
+        <div class="hud-container">
+          <!-- Title -->
+          <div class="hud-title">
+            {{ globalStore.activeRace.raceName || "MOCK RACE" }}
           </div>
-          <div class="column">
-            <span id="smaller">{{ translate("checkpoints") }}</span>
-            <span id="checkpoint">{{
-              `${globalStore.activeRace.currentCheckpoint}/${globalStore.activeRace.totalCheckpoints}`
-            }}</span>
+
+          <!-- Laps and Checkpoints Row -->
+          <div class="info-row">
+            <div class="info-box">
+              <div class="info-label">{{ translate("laps") || "Laps" }}</div>
+              <div class="info-value">{{ lapText }}</div>
+            </div>
+            <div class="info-box">
+              <div class="info-label">{{ translate("checkpoints") || "Checkpoints" }}</div>
+              <div class="info-value">
+                {{ `${globalStore.activeRace.currentCheckpoint}/${globalStore.activeRace.totalCheckpoints}` }}
+              </div>
+            </div>
           </div>
-          <div class="row">
-            <span id="race-time">{{ lapText }}</span>
-            <FlagIcon />
+
+          <!-- Time Display -->
+          <div class="time-display">
+            <span>{{ msToHMS(globalStore.activeRace.time) }}</span>
+            <div class="icon-wrapper">
+              <TimerIcon :size="18" />
+            </div>
           </div>
-          <div class="row">
-            <span id="race-time">{{
-              msToHMS(globalStore.activeRace.time)
-            }}</span>
-            <TimerIcon />
+
+          <!-- Best Lap Time -->
+          <div class="time-display">
+            <span>{{ msToHMS(globalStore.activeRace.bestLap) }}</span>
+            <div class="icon-wrapper">
+              <StarIcon :size="18" />
+            </div>
           </div>
-          <div class="row">
-            <span id="race-time">{{
-              msToHMS(globalStore.activeRace.totalTime)
-            }}</span>
-            <HourglassIcon />
+
+          <!-- Total Time -->
+          <div class="time-display">
+            <span>{{ msToHMS(globalStore.activeRace.totalTime) }}</span>
+            <div class="icon-wrapper">
+              <HourglassIcon :size="18" />
+            </div>
           </div>
-          <div class="row">
-            <span id="race-time">{{
-              msToHMS(globalStore.activeRace.bestLap)
-            }}</span>
-            <StarIcon />
-          </div>
-          <div id="race-ghosted-span" v-if="globalStore.activeRace.ghosted">
-            <GhostIcon />
+
+          <!-- Ghost Indicator -->
+          <div class="ghost-container" v-if="globalStore.activeRace.ghosted">
+            <div class="ghost-indicator">
+              <span>GHOST</span>
+              <div class="icon-wrapper-ghost">
+                <GhostIcon :size="12" />
+              </div>
+            </div>
           </div>
         </div>
       </div>
@@ -90,19 +99,7 @@ const lapText = computed(() => {
 });
 </script>
 
-<style scoped >
-span {
-  text-shadow:1px 1px 18px black;
-}
-
-#race-ghosted-span {
-  display: flex;
-  justify-content: end;
-}
-
-#race-time {
-  /* color: #ffffffc7; */
-}
+<style scoped>
 .race {
   position: absolute;
   pointer-events: none;
@@ -110,9 +107,10 @@ span {
   left: 0;
   z-index: 10;
 }
+
 .boxes {
   color: #ffffffc7;
-  font-family: "Teko", sans-serif;
+  font-family: "Poppins", sans-serif;
   font-optical-sizing: auto;
   font-style: normal;
   text-transform: uppercase;
@@ -121,10 +119,11 @@ span {
   flex-direction: v-bind(direction);
   width: 100vw;
 }
+
 .blocks-container {
   display: flex;
   flex-direction: row;
-  justify-content: space-between;
+  justify-content: flex-end;
   gap: 1em;
 }
 
@@ -136,75 +135,127 @@ span {
   transform: rotate(355deg);
 }
 
-.blocks {
-  flex-grow: 4;
+.hud-container {
   display: flex;
   flex-direction: column;
-  align-items: end;
-  gap: 5px;
+  align-items: stretch;
+  width: 300px;
+  overflow: hidden;
   margin-right: 1em;
-  margin-left: 1em;
+  gap: 3px;
 }
 
-.hud-text {
-  text-align: right;
-  padding: 10px;
-  padding-right: 15px;
-  padding-left: 15px;
-  font-weight: 600;
-  width: 100%;
-  text-transform: uppercase;
+.hud-title {
+  background: linear-gradient(180deg, rgba(168, 168, 168, 0.95) 0%, rgba(128, 128, 128, 0.95) 100%);
+  color: #fff;
+  text-align: center;
+  padding: 6px 10px;
+  font-size: 1.5em;
+  font-weight: 200;
+  text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.5);
+  border-bottom: 1px solid rgba(0, 0, 0, 0.4);
+  border-radius: 3px 3px 3px 3px;
 }
 
-.leftAligned {
-  text-align: left;
-}
-
-.split {
+.info-row {
   display: flex;
-  justify-content: space-between;
+  justify-content: stretch;
+  gap: 2px;
 }
 
-#track-name {
-  font-size: 1.2em;
-  font-weight: 700;
+.info-box {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 6px 0;
+  background-color: rgba(38, 38, 38, 0.9);
+  color: #fff;
+  min-height: 48px;
+  border: 1px solid  rgba(38, 38, 38, 0.9);
+  border-radius: 3px 3px 3px 3px;
 }
 
-.row {
+.info-label {
+  font-size: 0.75em;
+  font-weight: 600;
+  letter-spacing: 1.5px;
+  color: #ff8c00;
+  margin-bottom: 4px;
+  margin-top: -6px;
+  background-color: rgba(38, 38, 38, 0.9);
+  width: 100%;
+  padding: 2px 0;
+  text-align: center;
+}
+
+.info-value {
+  font-size: 1.6em;
+  font-weight: 300;
+  letter-spacing: 2px;
+  color: #fff;
+}
+
+.time-display {
+  background-color: rgba(38, 38, 38, 0.9);
+  color: #fff;
   display: flex;
   align-items: center;
-  gap: 0.5em;
+  justify-content: space-between;
+  padding: 0px 0px;
+  font-size: 1em;
+  font-weight: 100;
+  min-height: 20px;
+  border: 1px solid  rgba(38, 38, 38, 0.9);
+  border-radius: 3px 3px 3px 3px;
 }
 
-.row-big {
+.time-display span {
+  flex: 1;
+  text-align: center;
+}
+
+.icon-wrapper {
   display: flex;
-  align-items: flex-start;
-  font-weight: 600;
+  align-items: center;
+  justify-content: center;
+  background-color: rgba(38, 38, 38, 0.9);
+  padding: 0px;
+  min-width: 100px;
+  height: 100%;
 }
 
-.smaller {
-  font-size: 0.5em;
-}
-
-.column {
+.ghost-container {
   display: flex;
-  flex-direction: column;
+  justify-content: flex-end;
+  background-color: transparent;
+  border-radius: 0 0 3px 0;
 }
 
-.position-container {
+.ghost-indicator {
+  background-color: rgba(38, 38, 38, 0.9);
+  color: #fff;
   display: flex;
-  align-items: flex-start;
+  align-items: center;
+  justify-content: center;
+  gap: 5px;
+  padding: 0px 0px 0px 5px ;
+  font-size: 0.6em;
+  font-weight: 400;
+  min-height: 20px;
+  border: 1px solid  rgba(38, 38, 38, 0.9);
+  border-radius: 3px 3px 3px 3px;
+  width: fit-content;
 }
 
-#position {
-  margin-left: 0.1em;
-  font-size: 5em;
-  line-height: 85%;
-}
-
-#checkpoint {
-  font-size: 2em;
-  line-height: 85%;
-  text-align: end;
+.icon-wrapper-ghost {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: rgba(38, 38, 38, 0.9);
+  padding: 3px;
+  min-width: 20px;
+  min-height: 100%;
 }
 </style>

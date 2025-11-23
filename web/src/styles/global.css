@@ -1,8 +1,10 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap');
 @import "tailwindcss";
 
 body {
   user-select: none;
-  background: #fff0 !important;
+  background: rgba(255, 255, 255, 0) !important;
+  font-family: 'Poppins', sans-serif;
 }
 
 .allow-select {
