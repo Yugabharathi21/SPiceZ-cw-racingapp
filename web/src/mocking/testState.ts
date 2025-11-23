@@ -7740,7 +7740,7 @@ export const activeRaceMock: ActiveRace = {
       time: 12400,
       totalTime: 0,
       bestLap: 0,
-      position: 1,
+      position: 4,
       totalRacers: 0,
       ghosted: true,
       positions: [
@@ -7750,7 +7750,7 @@ export const activeRaceMock: ActiveRace = {
           RacerName: "Mock Racer",
           PlayerVehicleEntity: 0,
           Lap: 1,
-          Placement: 1,
+          Placement: 6,
           Finished: true,
           CheckpointTimes: [
             {
@@ -7771,7 +7771,7 @@ export const activeRaceMock: ActiveRace = {
           RacerName: "Someone else",
           PlayerVehicleEntity: 0,
           Lap: 1,
-          Placement: 2,
+          Placement: 1,
           Finished: true,
           CheckpointTimes: [
             {
@@ -7787,7 +7787,7 @@ export const activeRaceMock: ActiveRace = {
           RacerName: "Someone else 2",
           PlayerVehicleEntity: 0,
           Lap: 1,
-          Placement: 4,
+          Placement: 2,
           Finished: false,
           CheckpointTimes: [
             {
@@ -7803,7 +7803,7 @@ export const activeRaceMock: ActiveRace = {
           RacerName: "Someone else 3",
           PlayerVehicleEntity: 0,
           Lap: 1,
-          Placement: 3,
+          Placement: 4,
           Finished: false,
           CheckpointTimes: [
             {

@@ -1,8 +1,9 @@
 <template>
   <div class="racers-holder">
+    <!-- Show top 3 racers -->
     <div
       class="racer-box"
-      v-for="(racer, index) in shortenedRacers"
+      v-for="(racer, index) in displayRacers"
       :class="{ 'is-player': index === globalStore.activeRace.position - 1 }"
       :key="racer.RacerSource"
     >
@@ -16,6 +17,21 @@
         <span v-else-if="index !== globalStore.activeRace.position-1">{{ getTimeDifference(racers[globalStore.activeRace.position - 1], racer) }}</span>
       </div>
     </div>
+
+    <!-- Separator and player card when player is below podium (position > 3) -->
+    <template v-if="isPlayerBelowPodium && playerRacer">
+      <div class="separator"></div>
+      <div class="racer-box is-player" :key="'player-' + playerRacer.RacerSource">
+        <div class="racer-content">
+          <div class="racer-position">{{ globalStore.activeRace.position }}</div>
+          <div class="racer-name">{{ playerRacer.RacerName }}</div>
+        </div>
+        <div class="racer-status">
+          <span v-if="playerRacer.Finished">{{ translate('finished') }}</span>
+          <span v-else>{{ getTimeDifference(racers[0], playerRacer) }}</span>
+        </div>
+      </div>
+    </template>
   </div>
 </template>
 
@@ -31,6 +47,28 @@ const props = defineProps<{
 }>();
 
 const globalStore = useGlobalStore();
+
+const isPlayerBelowPodium = computed(() => {
+  return globalStore.activeRace.position > 3;
+});
+
+const displayRacers = computed(() => {
+  if (isPlayerBelowPodium.value) {
+    // Show only top 3 when player is below podium
+    return props.racers?.slice(0, 3) || [];
+  }
+  // Show normal list when player is in top 3
+  return props.racers?.slice(
+    0,
+    globalStore.baseData?.data?.hudSettings?.maxPositions || 10
+  ) || [];
+});
+
+const playerRacer = computed(() => {
+  if (!isPlayerBelowPodium.value) return null;
+  return props.racers?.[globalStore.activeRace.position - 1];
+});
+
 const shortenedRacers = computed(() =>
   props.racers?.slice(
     0,
@@ -152,5 +190,12 @@ const getBoxStyle = (index: number) => {
   border-radius: 3px;
   flex-shrink: 0;
   border: 1px solid rgba(0, 0, 0, 0.5);
+}
+
+.separator {
+  width: 100%;
+  height: 2px;
+  background-color: rgba(0, 0, 0, 1);
+  margin: 6px 0;
 }
 </style>
