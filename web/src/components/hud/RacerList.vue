@@ -1,20 +1,20 @@
 <template>
-  <!--
-    bg-primary bg-secondary text-primary-foreground text-secondary-foreground
-  -->
-  <div class="dark racers-holder">
+  <div class="racers-holder">
     <div
-    class="box"
-    v-for="(racer, index) in shortenedRacers"
-    :style="getBoxStyle(index)"
-    :key="racer.RacerSource"
+      class="racer-box"
+      v-for="(racer, index) in shortenedRacers"
+      :class="{ 'is-player': index === globalStore.activeRace.position - 1 }"
+      :key="racer.RacerSource"
     >
-      <div class="number">{{ index + 1 }}</div>
-      <span class="name">{{ racer.RacerName }}</span>
-      <span class="difference" v-if="index === 0 && racer.Finished" >{{ translate('winner') }}</span>
-      <span class="difference" v-else-if="racer.Finished" >{{ translate('finished') }}</span>
-      <span class="difference" v-else-if="index !== globalStore.activeRace.position-1" >{{ getTimeDifference(racers[globalStore.activeRace.position - 1], racer) }}</span>
-      <CheckIcon v-if="racer.Finished"></CheckIcon>
+      <div class="racer-content">
+        <div class="racer-position">{{ index + 1 }}</div>
+        <div class="racer-name">{{ racer.RacerName }}</div>
+      </div>
+      <div class="racer-status">
+        <span v-if="index === 0 && racer.Finished">{{ translate('winner') }}</span>
+        <span v-else-if="racer.Finished">{{ translate('finished') }}</span>
+        <span v-else-if="index !== globalStore.activeRace.position-1">{{ getTimeDifference(racers[globalStore.activeRace.position - 1], racer) }}</span>
+      </div>
     </div>
   </div>
 </template>
@@ -78,35 +78,79 @@ const getBoxStyle = (index: number) => {
 }
 
 </script>
-<style scoped >
-.name {
-  text-overflow: ellipsis;
-  max-width: 20em;
-  max-lines: 1;
-  overflow: hidden;
-  white-space: nowrap;
-  padding: 0.5em;
-  margin-right: 1em;
-}
+<style scoped>
 .racers-holder {
+  position: absolute;
+  top: 5vh;
+  left: 1em;
   display: flex;
   flex-direction: column;
-  gap: 0.3em;
+  gap: 2px;
+  font-family: "Poppins", sans-serif;
+  text-transform: uppercase;
+  pointer-events: none;
 }
-.number {
-  font-size: 1.1em;
-  font-weight: bold;
-}
-.box {
-  width: 100%;
-  font-size: 1em;
-  font-weight: 600;
+
+.racer-box {
   display: flex;
-  border-radius: 2em;
-  gap: 1em;
+  align-items: stretch;
+  background-color: transparent;
+  color: #fff;
+  min-width: 350px;
+  gap: 2px;
+  border-radius: 3px;
+}
+
+.racer-box.is-player .racer-content {
+  background: linear-gradient(90deg, rgba(38, 38, 38, 0.9) 0%, rgba(128, 0, 128, 0.9) 100%);
+}
+
+.racer-content {
+  display: flex;
   align-items: center;
-  clip-path: polygon(5% 100%,100% 100%,95% 0%,0% 0%,calc(100% - 88px) 0%,0% 0%);
-  padding-right: 2em;
-  padding-left: 2em;
+  background-color: rgba(38, 38, 38, 0.9);
+  flex: 1;
+  gap: 2px;
+  border-radius: 3px;
+  border: 1px solid rgba(0, 0, 0, 0.5);
+}
+
+.racer-position {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: rgba(0, 0, 0, 0.3);
+  color: #fff;
+  font-size: 0.9em;
+  font-weight: 200;
+  min-width: 32px;
+  min-height: 30px;
+  border-radius: 0px opx 3px 3px;
+  flex-shrink: 0;
+}
+
+.racer-name {
+  flex: 1;
+  padding: 0 12px;
+  font-size: 0.85em;
+  font-weight: 200;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.racer-status {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 5px 12px;
+  font-size: 0.8em;
+  font-weight: 200;
+  min-width: 80px;
+  text-align: center;
+  background-color: rgba(38, 38, 38, 0.9);
+  border-radius: 3px;
+  flex-shrink: 0;
+  border: 1px solid rgba(0, 0, 0, 0.5);
 }
 </style>

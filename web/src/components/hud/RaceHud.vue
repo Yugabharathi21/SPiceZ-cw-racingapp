@@ -103,7 +103,7 @@ const lapText = computed(() => {
 .race {
   position: absolute;
   pointer-events: none;
-  top: 5vh;
+  top: 3vh;
   left: 0;
   z-index: 10;
 }
@@ -132,7 +132,6 @@ const lapText = computed(() => {
   flex-direction: column;
   gap: 1em;
   margin: 2em;
-  transform: rotate(355deg);
 }
 
 .hud-container {
