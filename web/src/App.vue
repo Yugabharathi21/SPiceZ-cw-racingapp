@@ -118,7 +118,7 @@ onMounted(() => {
   if (import.meta.env.VITE_MOCK_UI === 'true') {
     globalStore.$state = raceTestState as unknown as typeof globalStore.$state;
     globalStore.$state.activeRace = activeRaceMock;
-    globalStore.$state.countdown = 10;
+    globalStore.$state.countdown = testState.countdown ?? 10;
   }
   if (import.meta.env.VITE_MOCK_CREATOR === 'true') {
     globalStore.$state.creatorData = {
