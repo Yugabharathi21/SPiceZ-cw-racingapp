@@ -13,7 +13,7 @@ export const testState = {
   showOnlyCurated: true,
   activeRace: {},
   activeHudData: {},
-  countdown: 0  ,
+  countdown: 2 ,
   buttons: {},
   creatorData: {},
   head2headData: {

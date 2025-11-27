@@ -74,9 +74,6 @@ defineProps<{
   /* Design tokens */
   --light-size: clamp(48px, 4.5vw, 68px);
   --light-gap: clamp(14px, 2vw, 22px);
-  --border-radius: 999px;
-  --shell-bg: radial-gradient(circle at 0% 0%, #444 0%, #111 40%, #050505 100%);
-  --shell-overlay: linear-gradient(135deg, rgba(255, 255, 255, 0.06), transparent 40%, rgba(255, 255, 255, 0.12));
   --accent-red: #ff3b3b;
   --accent-green: #37ff6b;
   --accent-yellow: #ffd447;
@@ -86,65 +83,11 @@ defineProps<{
   align-items: center;
   justify-content: center;
   padding: clamp(20px, 3vw, 36px) clamp(30px, 5vw, 50px);
-  background:
-    var(--shell-bg),
-    repeating-linear-gradient(
-      45deg,
-      rgba(255, 255, 255, 0.02),
-      rgba(255, 255, 255, 0.02) 2px,
-      transparent 2px,
-      transparent 4px
-    );
-  background-size: cover, 6px 6px;
-  border-radius: var(--border-radius);
-  border: 1px solid rgba(255, 255, 255, 0.15);
-  box-shadow:
-    0 18px 45px rgba(0, 0, 0, 0.8),
-    inset 0 1px 0 rgba(255, 255, 255, 0.08),
-    inset 0 -1px 0 rgba(0, 0, 0, 0.7);
   position: relative;
   backdrop-filter: blur(12px);
   isolation: isolate;
 }
 
-/* Outer subtle edge highlight */
-.traffic-lights::before {
-  content: '';
-  position: absolute;
-  inset: 0;
-  border-radius: inherit;
-  padding: 1px;
-  background: linear-gradient(
-    135deg,
-    rgba(255, 255, 255, 0.2),
-    transparent 40%,
-    rgba(255, 255, 255, 0.08)
-  );
-  -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
-  -webkit-mask-composite: xor;
-  mask-composite: exclude;
-  pointer-events: none;
-  opacity: 0.85;
-}
-
-/* Top metal band / mount */
-.traffic-lights::after {
-  content: '';
-  position: absolute;
-  top: 6px;
-  left: 12%;
-  right: 12%;
-  height: 6px;
-  border-radius: 999px;
-  background: linear-gradient(
-    90deg,
-    rgba(255, 255, 255, 0.26),
-    rgba(0, 0, 0, 0.9),
-    rgba(255, 255, 255, 0.18)
-  );
-  opacity: 0.45;
-  pointer-events: none;
-}
 
 .light {
   width: var(--light-size);
@@ -220,15 +163,6 @@ defineProps<{
   opacity: 0;
   filter: blur(2px);
   transition: opacity 0.18s ease-out;
-}
-
-/* Hover / focus feedback */
-.light:hover {
-  transform: translateY(-1px) scale(1.02);
-  box-shadow:
-    inset 0 5px 16px rgba(0, 0, 0, 0.9),
-    inset 0 -3px 9px rgba(255, 255, 255, 0.05),
-    0 6px 18px rgba(0, 0, 0, 0.9);
 }
 
 .light:active {
