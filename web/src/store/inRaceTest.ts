@@ -1,7 +1,7 @@
 /* eslint-disable no-loss-of-precision */
 export const raceTestState = {
-  appIsOpen: false,
-  hudIsOpen: true,
+  appIsOpen: true,
+  hudIsOpen: false,
   currentPage: "racing",
   currentTab: {
     racing : 'current',

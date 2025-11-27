@@ -3,17 +3,17 @@ import { ActiveRace, Track } from "../store/types";
 
 /* eslint-disable no-loss-of-precision */
 export const testState = {
-  appIsOpen: false,
-  hudIsOpen: true,
+  appIsOpen: true,
+  hudIsOpen: false,
   currentPage: "dashboard",
   currentTab: {
     racing : 'current',
     results: 'results'
   },
-  showOnlyCurated: true,
+  showOnlyCurated: false,
   activeRace: {},
   activeHudData: {},
-  countdown: 2 ,
+  countdown: 0 ,
   buttons: {},
   creatorData: {},
   head2headData: {
