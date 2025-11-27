@@ -1,45 +1,23 @@
 <template>
-  <Sidebar class="relative m-h-0 h-full" collapsible="icon">
-    <SidebarContent >
-      <SidebarHeader >
-        <SidebarUser v-if="isOpen" ></SidebarUser>
-        <SidebarTrigger v-if="!isOpen"></SidebarTrigger>
-      </SidebarHeader>
-      <SidebarGroup v-if="!noUser">
-        <SidebarGroupLabel>
-          {{ translate('navigation_title') }}
-        </SidebarGroupLabel>
-        <SidebarGroupContent>
-          <SidebarMenu>
-            <SidebarMenuItem v-for="item in items" :key="item.name">
-              <SidebarMenuButton
-                :isActive="globalStore.currentPage === item.name"
-                asChild
-                v-if="item.visible"
-                >
-                <a @click="openPage(item.name)">
-                  <component :is="item.icon" />
-                  <span>{{ item.title }}</span>
-                </a>
-              </SidebarMenuButton>
-            </SidebarMenuItem>
-          </SidebarMenu>
-        </SidebarGroupContent>
-      </SidebarGroup>
-    </SidebarContent>
-    <SidebarFooter >
-      <SidebarMenuButton
-         asChild
-         :isActive="globalStore.currentPage === 'settings'"
-         >
-         <a @click="openPage('settings')">
-           <CogIcon />
-           <span>{{ translate('settings') }}</span>
-
-         </a>
-       </SidebarMenuButton>
-    </SidebarFooter>
-  </Sidebar>
+  <div class="dock-container">
+    <div class="dock">
+      <div class="dock-item" 
+           v-for="item in items" 
+           :key="item.name"
+           :class="{ active: globalStore.currentPage === item.name }"
+           @click="openPage(item.name)"
+           :title="item.title">
+        <component :is="item.icon" class="dock-icon" />
+      </div>
+      <div class="dock-separator"></div>
+      <div class="dock-item" 
+           :class="{ active: globalStore.currentPage === 'settings' }"
+           @click="openPage('settings')"
+           :title="translate('settings')">
+        <CogIcon class="dock-icon" />
+      </div>
+    </div>
+  </div>
 </template>
 
 <script setup lang="ts">
@@ -81,5 +59,95 @@ const openPage = (page: string) => {
 };
 </script>
 
-<style scoped >
+<style scoped>
+.dock-container {
+  position: absolute;
+  bottom: 20px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 50;
+  pointer-events: none;
+}
+
+.dock {
+  display: flex;
+  align-items: flex-end;
+  gap: 8px;
+  padding: 12px 16px;
+  background: rgba(38, 38, 38, 0.9);
+  border: 1px solid rgba(0, 0, 0, 0.5);
+  border-radius: 20px;
+  backdrop-filter: blur(10px);
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.5);
+  pointer-events: all;
+}
+
+.dock-item {
+  width: 48px;
+  height: 48px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(25, 22, 22, 0.95);
+  border: 1px solid rgba(0, 0, 0, 0.5);
+  border-radius: 12px;
+  cursor: pointer;
+  transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+  position: relative;
+}
+
+.dock-item:hover {
+  transform: translateY(-12px) scale(1.15);
+  background: rgba(48, 48, 48, 0.95);
+  box-shadow: 0 12px 24px rgba(0, 0, 0, 0.4);
+}
+
+.dock-item:hover::before {
+  content: attr(title);
+  position: absolute;
+  bottom: calc(100% + 12px);
+  left: 50%;
+  transform: translateX(-50%);
+  padding: 6px 12px;
+  background: rgba(38, 38, 38, 0.95);
+  border: 1px solid rgba(0, 0, 0, 0.5);
+  border-radius: 6px;
+  color: white;
+  font-size: 12px;
+  font-weight: 300;
+  text-transform: uppercase;
+  letter-spacing: 1.5px;
+  white-space: nowrap;
+  pointer-events: none;
+  backdrop-filter: blur(10px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+}
+
+.dock-item.active {
+  background: rgba(255, 140, 0, 0.9);
+  box-shadow: 0 4px 16px rgba(255, 140, 0, 0.4);
+}
+
+.dock-item.active:hover {
+  background: rgba(255, 140, 0, 0.95);
+}
+
+.dock-icon {
+  width: 24px;
+  height: 24px;
+  color: white;
+  transition: all 0.2s ease;
+}
+
+.dock-item:hover .dock-icon {
+  transform: scale(1.1);
+}
+
+.dock-separator {
+  width: 2px;
+  height: 40px;
+  background: rgba(0, 0, 0, 0.5);
+  margin: 0 4px;
+  border-radius: 2px;
+}
 </style>

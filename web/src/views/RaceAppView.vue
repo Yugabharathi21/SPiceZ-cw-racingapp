@@ -4,10 +4,11 @@
       <!-- <TopBar /> -->
       <div ref="screen-root" id="screen-root" class="app-container dark bg-background text-foreground">
         <Toaster container="screen-root" position="top-center" />
+        <UserCapsule />
         <SidebarProvider class="m-h-0 h-80">
           <AppSideBar />
           <SidebarInset>
-            <main class="main-content">
+            <main class="main-content" style="padding-top: 28px;">
               <div
                 class="tabs-container"
                 v-if="!hasProblem"
@@ -67,6 +68,7 @@ import { CircleAlertIcon } from "lucide-vue-next";
 import AlertTitle from "@/components/ui/alert/AlertTitle.vue";
 import 'vue-sonner/style.css'
 import DashboardPage from "@/components/app/pages/DashboardPage.vue";
+import UserCapsule from "@/components/app/UserCapsule.vue";
 
 const globalStore = useGlobalStore();
 
